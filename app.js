@@ -49,7 +49,21 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/login/:id", (req, res) => {
-  res.render("welcome");
+  const id = req.params.id;
+  User.findById(id)
+    .lean()
+    .then((user) => {
+      // 取得@的位置
+      const atIndex = user.email.indexOf("@");
+      // 取得@前面的名字
+      let name = user.email.slice(0, atIndex);
+      // 將第一個小寫變為大寫
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      res.render("welcome", { name });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.listen(port, () => {
