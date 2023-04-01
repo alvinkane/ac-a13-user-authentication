@@ -9,6 +9,8 @@ if (process.env.NODE_ENV !== "production") {
 const app = express();
 const port = 3000;
 
+const User = require("./models/user");
+
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
@@ -25,13 +27,25 @@ db.once("open", () => {
 app.engine("hbs", exphbs({ defaultLayout: "main", extname: "hbs" }));
 app.set("view engine", "hbs");
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.render("index");
 });
 
 app.post("/login", (req, res) => {
-  const id = 1;
-  res.redirect(`/login/${id}`);
+  const { email, password } = req.body;
+  User.findOne({ email, password })
+    .then((user) => {
+      if (user !== null) {
+        res.redirect(`/login/${user._id}`);
+      } else {
+        res.render("index", { email, password });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/login/:id", (req, res) => {
