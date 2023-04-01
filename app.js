@@ -29,6 +29,15 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.post("/login", (req, res) => {
+  const id = 1;
+  res.redirect(`/login/${id}`);
+});
+
+app.get("/login/:id", (req, res) => {
+  res.render("welcome");
+});
+
 app.listen(port, () => {
   console.log(`This is running on http://localhost:${port}`);
 });
