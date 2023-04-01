@@ -1,6 +1,6 @@
-<form action="/login" method="POST">
+<form action="/login" method="POST" novalidate>
   <div class="row">
-    <p class="fs-1 mt-5">Account Login</p>
+    <a href="/" class="navbar-brand fs-1 mt-5">Account Login</a>
   </div>
   <div class="row m-3">
     <input
@@ -10,6 +10,7 @@
       value="{{email}} "
       class="form-control mx-auto"
       style="width: 20em"
+      required
     />
   </div>
   <div class="row m-3">
@@ -20,7 +21,10 @@
       value="{{password}}"
       class="form-control mx-auto"
       style="width: 20em"
+      required
     />
   </div>
+  {{#if index}}<h5 class="text-danger" style="font-size: 1em">Please input a
+      valid email or password.</h5>{{/if}}
   <button class="btn btn-outline-dark">Sign in</button>
 </form>

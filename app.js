@@ -35,12 +35,15 @@ app.get("/", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
+  // 用於判斷是否正確
+  let index = 0;
   User.findOne({ email, password })
     .then((user) => {
       if (user !== null) {
         res.redirect(`/login/${user._id}`);
       } else {
-        res.render("index", { email, password });
+        index = 1;
+        res.render("index", { email, password, index });
       }
     })
     .catch((err) => {
