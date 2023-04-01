@@ -9,18 +9,26 @@ if (process.env.NODE_ENV !== "production") {
 const app = express();
 const port = 3000;
 
-app.engine("hbs", exphbs({ defaultLayout: "main", extname: "hbs" }));
-app.set("view engine", "hbs");
-
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
 
-const db = mongoose.connections;
+const db = mongoose.connection;
 db.on("error", () => {
   console.log("mongodb error");
 });
 db.once("open", () => {
   console.log("mongodb connected");
+});
+
+app.engine("hbs", exphbs({ defaultLayout: "main", extname: "hbs" }));
+app.set("view engine", "hbs");
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.listen(port, () => {
+  console.log(`This is running on http://localhost:${port}`);
 });
